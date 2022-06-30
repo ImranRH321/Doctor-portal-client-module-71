@@ -4,6 +4,7 @@ import Appointment from '../Appointment/Appointment';
 import Banner from '../Banner/Banner';
 import Contect from '../Contect/Contect';
 import ServiceInfo from '../ServiceInfo/ServiceInfo';
+import Testmonials from '../Testmonials/Testmonials';
 import TetchServices from '../TetchServices/TetchServices';
 
 
@@ -15,7 +16,9 @@ const Home = () => {
             <ServiceInfo></ServiceInfo>
             <TetchServices></TetchServices>
             <Appointment></Appointment>
+            <Testmonials></Testmonials>
             <Contect></Contect>
+
         </div>
     );
 };
