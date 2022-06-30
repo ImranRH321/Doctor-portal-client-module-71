@@ -1,6 +1,6 @@
 import React from "react";
 import banner1 from '../../../assets/images/chair.png';
-import PrimaryButton from "../../Sheared/Navbar/PrimaryButton";
+import PrimaryButton from "../../Sheared/PrimaryButton";
 
 const Banner = () => {
   return (

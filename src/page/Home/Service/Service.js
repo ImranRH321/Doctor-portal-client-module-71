@@ -1,6 +1,6 @@
 import React from "react";
 
-const ServicesCart = ({ service }) => {
+const Service = ({ service }) => {
   return (
     <div>
       <div className="card  lg:max-w-96 bg-base-100 shadow-xl">
@@ -16,4 +16,4 @@ const ServicesCart = ({ service }) => {
   );
 };
 
-export default ServicesCart;
+export default Service;
