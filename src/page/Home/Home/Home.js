@@ -1,5 +1,6 @@
 import React from 'react';
 import Info from '../../Info/Info/Info';
+import Appointment from '../Appointment/Appointment';
 import Banner from '../Banner/Banner';
 import ServiceInfo from '../ServiceInfo/ServiceInfo';
 import TetchServices from '../TetchServices/TetchServices';
@@ -12,6 +13,7 @@ const Home = () => {
             <Info></Info>
             <ServiceInfo></ServiceInfo>
             <TetchServices></TetchServices>
+            <Appointment></Appointment>
         </div>
     );
 };
