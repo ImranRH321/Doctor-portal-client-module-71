@@ -10,7 +10,7 @@ import TetchServices from '../TetchServices/TetchServices';
 
 const Home = () => {
     return (
-        <div className='px-12'>
+        <div>
             <Banner></Banner>
             <Info></Info>
             <TetchServices></TetchServices>

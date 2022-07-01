@@ -8,7 +8,7 @@ import Appointment from './page/Home/Appointment/Appointment';
 
 function App() {
   return (
-    <div>
+    <div className='max-w-7xl mx-auto px-12'>
      <Navbar></Navbar>
      <Routes>
         <Route path="/" element={<Home />} />
