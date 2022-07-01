@@ -3,8 +3,8 @@ import React from "react";
 const ServiceBook = ({ service, setTeatMent }) => {
   const { name, slots } = service;
   return (
-    <div class="card lg:max-w-lg bg-base-100 shadow-xl">
-      <div class="card-body">
+    <div className="card lg:max-w-lg bg-base-100 shadow-xl">
+      <div className="card-body">
         <h2 className="text-center text-success font-bold text-xl">{name}</h2>
         <p>
           {slots.length ? (
@@ -16,7 +16,7 @@ const ServiceBook = ({ service, setTeatMent }) => {
         <p>
           {slots.length} {slots.length > 1 ? "spaces" : "spaces Not"} Available
         </p>
-        <div class="card-cations text-center">
+        <div className="card-cations text-center">
           <label
             disabled={slots.length === 0}
             className="btn bg-success text-white"
