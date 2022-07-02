@@ -64,39 +64,39 @@ const navigate = useNavigate();
           <h2 className="text-center text-4xl font-bold">SignUp</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div class="form-control w-full max-w-xs my-5">
-              <label class="label">
-                <span class="label-text">Name</span>
+            <div className="form-control w-full max-w-xs my-5">
+              <label className="label">
+                <span className="label-text">Name</span>
               </label>
               <input
                 type="name"
                 placeholder="Your name"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("name", { required: "name Address is required" })} 
               />
             </div>
             {/* ----------------- */}
-            <div class="form-control w-full max-w-xs my-5">
-              <label class="label">
-                <span class="label-text">Email</span>
+            <div className="form-control w-full max-w-xs my-5">
+              <label className="label">
+                <span className="label-text">Email</span>
               </label>
               <input
                 type="email"
                 placeholder="Your email"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("email", { required: "Email Address is required" })} 
               />
             </div>
             {/* -------------- */}
-            <div class="form-control w-full max-w-xs my-5">
-              <label class="label">
-                <span class="label-text">Password</span>
+            <div className="form-control w-full max-w-xs my-5">
+              <label className="label">
+                <span className="label-text">Password</span>
              
               </label>
               <input
                 type="password"
                 placeholder="Your password"
-                class="input input-bordered c"
+                className="input input-bordered c"
                 {...register(
                   "password",
                   { required: true },

@@ -21,7 +21,7 @@ const ServiceBook = ({ service, setTeatMent }) => {
             disabled={slots.length === 0}
             className="btn bg-success text-white"
             onClick={() => setTeatMent(service)}
-            for="booking-modal"
+            htmlFor="booking-modal"
           >
             BOOK APPOINTMENT
           </label>

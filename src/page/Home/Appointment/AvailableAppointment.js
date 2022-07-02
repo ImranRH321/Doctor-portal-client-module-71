@@ -18,10 +18,10 @@ const AvailableAppointment = ({ date }) => {
         Your have selected: {format(date, "PP")}.
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {services.map(servcie => (
+        {services.map(service => (
           <ServiceBook
-            id={servcie._id}
-            service={servcie}
+            id={service._id}
+            service={service}
             setTeatMent={setTeatMent}
           ></ServiceBook>
         ))}

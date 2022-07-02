@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
@@ -15,12 +15,11 @@ const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   let signInError;
-
 
   if (gerror || error) {
     signInError = (
@@ -33,10 +32,13 @@ const Login = () => {
     );
   }
 
-  if (guser || user) {
-    navigate(from, { replace: true });
-  }
+  useEffect(() => {
+    if (guser || user) {
+      navigate(from, { replace: true });
+    }
+  }, [guser, user, navigate, from]);
 
+  
   const {
     register,
     formState: { errors },
@@ -47,7 +49,6 @@ const Login = () => {
     signInWithEmailAndPassword(data.email, data.password);
   };
 
-  
   if (gloading || loading) {
     return <Loading></Loading>;
   }
@@ -59,27 +60,27 @@ const Login = () => {
           <h2 className="text-center text-4xl font-bold">Login</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div class="form-control w-full max-w-xs my-5">
-              <label class="label">
-                <span class="label-text">Email</span>
+            <div className="form-control w-full max-w-xs my-5">
+              <label className="label">
+                <span className="label-text">Email</span>
               </label>
               <input
                 type="email"
                 placeholder="Your email"
-                class="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs"
                 {...register("email")}
               />
             </div>
             {/* -------------- */}
-            <div class="form-control w-full max-w-xs my-5">
-              <label class="label">
-                <span class="label-text">Password</span>
+            <div className="form-control w-full max-w-xs my-5">
+              <label className="label">
+                <span className="label-text">Password</span>
                 {errors.password && <p>Last one Special Charckter</p>}
               </label>
               <input
                 type="password"
                 placeholder="Your password"
-                class="input input-bordered c"
+                className="input input-bordered c"
                 {...register(
                   "password",
                   { required: true },
@@ -94,7 +95,12 @@ const Login = () => {
               value="Login"
             />
           </form>
-            <p>New to Doctor portal ? <Link  className="text-secondary" to='/signup'>Create Account</Link></p>
+          <p>
+            New to Doctor portal ?{" "}
+            <Link className="text-secondary" to="/signup">
+              Create Account
+            </Link>
+          </p>
           <div className="divider">OR</div>
           <button onClick={() => signInWithGoogle()} className="btn bg-black">
             Continue With Google
