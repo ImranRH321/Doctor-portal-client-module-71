@@ -4,10 +4,11 @@ import {
   
     useCreateUserWithEmailAndPassword,
   useSignInWithGoogle,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   // google user
@@ -19,9 +20,12 @@ const SignUp = () => {
     loading,
     error,
   ] = useCreateUserWithEmailAndPassword(auth);
+//  update 
+const [updateProfile, updating, updatingError] = useUpdateProfile(auth);
+const navigate = useNavigate();
 
   let signInError;
-  if (gerror || error) {
+  if (gerror || error || updatingError) {
     signInError = (
       <p className="text-red-400 py-2">
         Error:{" "}
@@ -41,9 +45,12 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = data => {
+  const onSubmit = async data => {
     console.log(data);
-    createUserWithEmailAndPassword( data.email, data.password);
+  await  createUserWithEmailAndPassword( data.email, data.password);
+  await updateProfile({displayName: data.name})
+     console.log('updating name');
+     navigate('/appointment')
   };
 
   if (gloading || loading) {
