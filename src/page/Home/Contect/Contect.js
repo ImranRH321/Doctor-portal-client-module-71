@@ -3,7 +3,7 @@ import appointment from '../../../assets/images/appointment.png'
 
 const Contect = () => {
     return (
-      <div className=''>
+      <div className='mt-0'>
        
         <div 
         style={{

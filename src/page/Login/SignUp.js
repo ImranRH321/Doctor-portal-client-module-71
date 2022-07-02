@@ -1,19 +1,24 @@
 import React from "react";
+import Loading from "../Sheared/Loading";
 import {
-  useSignInWithEmailAndPassword,
+  
+    useCreateUserWithEmailAndPassword,
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
-import Loading from "../Sheared/Loading";
 import { Link } from "react-router-dom";
 
-const Login = () => {
-  // google
+const SignUp = () => {
+  // google user
   const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
-  //  login
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  //  new Register user
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
   let signInError;
   if (gerror || error) {
@@ -38,7 +43,7 @@ const Login = () => {
   } = useForm();
   const onSubmit = data => {
     console.log(data);
-    signInWithEmailAndPassword(data.email, data.password);
+    createUserWithEmailAndPassword( data.email, data.password);
   };
 
   if (gloading || loading) {
@@ -49,9 +54,21 @@ const Login = () => {
     <div className="flex h-screen justify-center items-center">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="text-center text-4xl font-bold">Login</h2>
+          <h2 className="text-center text-4xl font-bold">SignUp</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
+            <div class="form-control w-full max-w-xs my-5">
+              <label class="label">
+                <span class="label-text">Name</span>
+              </label>
+              <input
+                type="name"
+                placeholder="Your name"
+                class="input input-bordered w-full max-w-xs"
+                {...register("name", { required: "name Address is required" })} 
+              />
+            </div>
+            {/* ----------------- */}
             <div class="form-control w-full max-w-xs my-5">
               <label class="label">
                 <span class="label-text">Email</span>
@@ -60,14 +77,14 @@ const Login = () => {
                 type="email"
                 placeholder="Your email"
                 class="input input-bordered w-full max-w-xs"
-                {...register("email")}
+                {...register("email", { required: "Email Address is required" })} 
               />
             </div>
             {/* -------------- */}
             <div class="form-control w-full max-w-xs my-5">
               <label class="label">
                 <span class="label-text">Password</span>
-                {errors.password && <p>Last one Special Charckter</p>}
+             
               </label>
               <input
                 type="password"
@@ -79,15 +96,20 @@ const Login = () => {
                   { pattern: /(?=.*?[#?!@$%^&*-])/ }
                 )}
               />
+                 {errors.password && <p className="text-red-400">Last one Special Charckter</p>}
             </div>
             {signInError}
             <input
               type="submit"
               className="bg-black btn w-full max-w-xs"
-              value="Login"
+              value="Sing Up"
             />
           </form>
-            <p>New to Doctor portal ? <Link  className="text-secondary" to='/signup'>Create Account</Link></p>
+          <p>
+            AllReady...Have Account?  <Link className="text-success" to="/login">
+              Login
+            </Link>
+          </p>
           <div className="divider">OR</div>
           <button onClick={() => signInWithGoogle()} className="btn bg-black">
             Continue With Google
@@ -98,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
