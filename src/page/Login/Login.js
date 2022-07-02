@@ -6,7 +6,7 @@ import {
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
 import Loading from "../Sheared/Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
   // google
@@ -15,7 +15,13 @@ const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+
   let signInError;
+
+
   if (gerror || error) {
     signInError = (
       <p className="text-red-400 py-2">
@@ -28,7 +34,7 @@ const Login = () => {
   }
 
   if (guser || user) {
-    console.log(guser, user);
+    navigate(from, { replace: true });
   }
 
   const {
@@ -41,6 +47,7 @@ const Login = () => {
     signInWithEmailAndPassword(data.email, data.password);
   };
 
+  
   if (gloading || loading) {
     return <Loading></Loading>;
   }
