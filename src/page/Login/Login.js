@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
@@ -7,14 +8,22 @@ import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
 import Loading from "../Sheared/Loading";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { async } from "@firebase/util";
 
 const Login = () => {
   // google
   const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
-  //  login
+  //  login user
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+  /* reset password send  */
+  const [sendPasswordResetEmail, sending, errorR] =
+    useSendPasswordResetEmail(auth);
+  /* email  */
+  // const emailRef = useRef('')
 
+  const [email, setEmail] = useState('');
+ console.log(email,'email');
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -38,15 +47,22 @@ const Login = () => {
     }
   }, [guser, user, navigate, from]);
 
-  
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = data => {
+  const onSubmit = async data => {
     console.log(data);
-    signInWithEmailAndPassword(data.email, data.password);
+    await signInWithEmailAndPassword(data.email, data.password);
+  };
+
+
+  /*  reset click hanlde button  */
+  const handleResetPass = async () => {
+    console.log(email);
+    await sendPasswordResetEmail(email);
+    alert('Sent email');
   };
 
   if (gloading || loading) {
@@ -64,11 +80,12 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
-              <input
+              <input 
                 type="email"
                 placeholder="Your email"
                 className="input input-bordered w-full max-w-xs"
-                {...register("email")}
+                {...register("email", {
+                  onChange: (e) => setEmail(e.target.value)})}
               />
             </div>
             {/* -------------- */}
@@ -100,6 +117,12 @@ const Login = () => {
             <Link className="text-secondary" to="/signup">
               Create Account
             </Link>
+          </p>
+          <p>
+            Forget password ---?{" "}
+            <button onClick={handleResetPass} className="text-green-600">
+              Reset
+            </button>
           </p>
           <div className="divider">OR</div>
           <button onClick={() => signInWithGoogle()} className="btn bg-black">

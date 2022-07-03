@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Loading from "../Sheared/Loading";
 import {
-  
-    useCreateUserWithEmailAndPassword,
+  useCreateUserWithEmailAndPassword,
+  useSendEmailVerification,
   useSignInWithGoogle,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
@@ -14,15 +14,20 @@ const SignUp = () => {
   // google user
   const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
   //  new Register user
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
-//  update 
-const [updateProfile, updating, updatingError] = useUpdateProfile(auth);
-const navigate = useNavigate();
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  //  update
+  const [updateProfile, updating, updatingError] = useUpdateProfile(auth);
+  const navigate = useNavigate();
+
+  //  reset password state 
+  const [email, setEmail] = useState('')
+
+  /* varifySendEmail */
+  const [sendEmailVerification, sending, errorV] =
+    useSendEmailVerification(auth);
+
+
 
   let signInError;
   if (gerror || error || updatingError) {
@@ -47,15 +52,18 @@ const navigate = useNavigate();
   } = useForm();
   const onSubmit = async data => {
     console.log(data);
-  await  createUserWithEmailAndPassword( data.email, data.password);
-  await updateProfile({displayName: data.name})
-     console.log('updating name');
-     navigate('/appointment')
+    await createUserWithEmailAndPassword(data.email, data.password);
+    await updateProfile({ displayName: data.name });
+    console.log("updating name");
+    await sendEmailVerification(data.email);
+    alert("send email veryfi");
+    navigate("/appointment");
   };
 
   if (gloading || loading) {
     return <Loading></Loading>;
   }
+
 
   return (
     <div className="flex h-screen justify-center items-center">
@@ -72,7 +80,7 @@ const navigate = useNavigate();
                 type="name"
                 placeholder="Your name"
                 className="input input-bordered w-full max-w-xs"
-                {...register("name", { required: "name Address is required" })} 
+                {...register("name", { required: "name Address is required" })}
               />
             </div>
             {/* ----------------- */}
@@ -84,14 +92,15 @@ const navigate = useNavigate();
                 type="email"
                 placeholder="Your email"
                 className="input input-bordered w-full max-w-xs"
-                {...register("email", { required: "Email Address is required" })} 
+                {...register("email", {onChange: (e)=> setEmail(e.target.value)}, {
+                  required: "Email Address is required",
+                }, )}
               />
             </div>
             {/* -------------- */}
             <div className="form-control w-full max-w-xs my-5">
               <label className="label">
                 <span className="label-text">Password</span>
-             
               </label>
               <input
                 type="password"
@@ -103,7 +112,9 @@ const navigate = useNavigate();
                   { pattern: /(?=.*?[#?!@$%^&*-])/ }
                 )}
               />
-                 {errors.password && <p className="text-red-400">Last one Special Charckter</p>}
+              {errors.password && (
+                <p className="text-red-400">Last one Special Charckter</p>
+              )}
             </div>
             {signInError}
             <input
@@ -113,7 +124,8 @@ const navigate = useNavigate();
             />
           </form>
           <p>
-            AllReady...Have Account?  <Link className="text-success" to="/login">
+            AllReady...Have Account?{" "}
+            <Link className="text-success" to="/login">
               Login
             </Link>
           </p>

@@ -26,9 +26,13 @@ const AvailableAppointment = ({ date }) => {
           ></ServiceBook>
         ))}
       </div>
-      {teatMent && <BookingModal date={date} teatMent={teatMent} 
-      setTeatMent={setTeatMent}
-      ></BookingModal>}
+      {teatMent && (
+        <BookingModal
+          date={date}
+          teatMent={teatMent}
+          setTeatMent={setTeatMent}
+        ></BookingModal>
+      )}
     </div>
   );
 };
