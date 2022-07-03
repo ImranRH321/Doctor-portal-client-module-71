@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
+import { toast } from 'react-toastify';
 
 const BookingModal = ({ teatMent, date, setTeatMent }) => {
   const { name, slots, _id } = teatMent;
@@ -22,10 +23,20 @@ const BookingModal = ({ teatMent, date, setTeatMent }) => {
       patientName: user.displayName,
       phone: event.target.phone.value,
     };
-
     // console.log("booking --->", booking);
-    // close the modul
-    setTeatMent(null);
+
+    fetch("http://localhost:5000/booking", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(booking),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        // close the modal
+        toast('Doctor is booking')
+        setTeatMent(null);
+      });
   };
 
   return (
