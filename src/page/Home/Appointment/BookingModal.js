@@ -7,10 +7,24 @@ const BookingModal = ({ teatMent, date, setTeatMent }) => {
   const { name, slots, _id } = teatMent;
   const [user] = useAuthState(auth);
 
+  const dateFormattedDate = format(date, "PP");
+
   const handleSubmit = event => {
     event.preventDefault();
     const slot = event.target.slot.value;
-    console.log(_id, name, slot);
+    // console.log(_id, name, slot);
+
+    const booking = {
+      teatmentId: _id,
+      teatMent: name,
+      teatMentDate: dateFormattedDate,
+      patient: user.email,
+      patientName: user.displayName,
+      phone: event.target.phone.value,
+    };
+
+    // console.log("booking --->", booking);
+    // close the modul
     setTeatMent(null);
   };
 
@@ -20,7 +34,7 @@ const BookingModal = ({ teatMent, date, setTeatMent }) => {
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <label
-          htmlFor="booking-modal"
+            htmlFor="booking-modal"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
