@@ -2,13 +2,13 @@ import { format } from "date-fns";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const BookingModal = ({ teatMent, date, setTeatMent }) => {
   const { name, slots, _id } = teatMent;
   const [user] = useAuthState(auth);
 
-  const dateFormattedDate = format(date, "PP");
+  const formattedDate = format(date, "PP");
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -16,9 +16,10 @@ const BookingModal = ({ teatMent, date, setTeatMent }) => {
     // console.log(_id, name, slot);
 
     const booking = {
-      teatmentId: _id,
-      teatMent: name,
-      teatMentDate: dateFormattedDate,
+      treatmentId: _id,
+      treatment: name,
+      slot,
+      date: formattedDate,
       patient: user.email,
       patientName: user.displayName,
       phone: event.target.phone.value,
@@ -32,9 +33,15 @@ const BookingModal = ({ teatMent, date, setTeatMent }) => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        // close the modal
-        toast('Doctor is booking')
+        console.log("data", data);
+
+        if (data.success) {
+          toast(`Appointment is set, ${formattedDate} at ${slot}`);
+        } else {
+          toast.error(
+            `Already have and appointment on ${data.booking?.date} at ${data.booking?.slot}`
+          );
+        }
         setTeatMent(null);
       });
   };
