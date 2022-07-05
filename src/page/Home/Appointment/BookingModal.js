@@ -4,46 +4,40 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import { toast } from "react-toastify";
 
-const BookingModal = ({ teatMent, date, setTeatMent }) => {
+const BookingModal = ({ teatMent, date, setTeatMent ,refetch}) => {
+  const formattedDate = format(date, 'PP')
   const { name, slots, _id } = teatMent;
   const [user] = useAuthState(auth);
-
-  const formattedDate = format(date, "PP");
 
   const handleSubmit = event => {
     event.preventDefault();
     const slot = event.target.slot.value;
-    // console.log(_id, name, slot);
-
-    const booking = {
+    const data = {
       treatmentId: _id,
-      treatment: name,
+      treatment: name, 
       slot,
       date: formattedDate,
-      patient: user.email,
       patientName: user.displayName,
-      phone: event.target.phone.value,
-    };
-    // console.log("booking --->", booking);
+      patient: user.email
+    }
+  // console.log('booking', booking);
+   fetch('http://localhost:5000/booking', {
+    method: 'POST', 
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify(data)
+   })
+   .then(res => res.json())
+   .then(result => {
+    console.log(result);
+     if(result.success){
+       toast(`Appointment book--->  ${formattedDate} on ${slot} `)
+     } else{
+      toast.error(`all ready have appointment book ${result.user.date} on ${result.user.slot}`)
+     }
+     refetch()
+    setTeatMent(null)
+   })
 
-    fetch("http://localhost:5000/booking", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(booking),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("data", data);
-
-        if (data.success) {
-          toast(`Appointment is set, ${formattedDate} at ${slot}`);
-        } else {
-          toast.error(
-            `Already have and appointment on ${data.booking?.date} at ${data.booking?.slot}`
-          );
-        }
-        setTeatMent(null);
-      });
   };
 
   return (

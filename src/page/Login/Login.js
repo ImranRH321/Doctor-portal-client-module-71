@@ -12,7 +12,7 @@ import { async } from "@firebase/util";
 
 const Login = () => {
   // google
-  const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, userG, gloading, gerror] = useSignInWithGoogle(auth);
   //  login user
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
@@ -23,7 +23,6 @@ const Login = () => {
   // const emailRef = useRef('')
 
   const [email, setEmail] = useState('');
- console.log(email,'email');
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -42,10 +41,10 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (guser || user) {
+    if (user || userG) {
       navigate(from, { replace: true });
     }
-  }, [guser, user, navigate, from]);
+  }, [userG, user, navigate, from]);
 
   const {
     register,

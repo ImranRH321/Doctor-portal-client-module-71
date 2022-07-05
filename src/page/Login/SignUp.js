@@ -9,10 +9,12 @@ import {
 import auth from "../../firebase.init";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import useToken from "../../hooks/useToken";
+
 
 const SignUp = () => {
   // google user
-  const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, gUser, gloading, gerror] = useSignInWithGoogle(auth);
   //  new Register user
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
@@ -20,14 +22,16 @@ const SignUp = () => {
   const [updateProfile, updating, updatingError] = useUpdateProfile(auth);
   const navigate = useNavigate();
 
-  //  reset password state 
-  const [email, setEmail] = useState('')
 
   /* varifySendEmail */
   const [sendEmailVerification, sending, errorV] =
     useSendEmailVerification(auth);
 
-
+   //  reset password state 
+   const [email, setEmail] = useState('')
+  
+   const [token] = useToken(user ||  gUser)
+ 
 
   let signInError;
   if (gerror || error || updatingError) {
@@ -41,8 +45,8 @@ const SignUp = () => {
     );
   }
 
-  if (guser || user) {
-    console.log(guser, user);
+  if (token) {
+    navigate("/appointment"); 
   }
 
   const {
@@ -56,8 +60,6 @@ const SignUp = () => {
     await updateProfile({ displayName: data.name });
     console.log("updating name");
     await sendEmailVerification(data.email);
-    alert("send email veryfi");
-    navigate("/appointment");
   };
 
   if (gloading || loading) {
