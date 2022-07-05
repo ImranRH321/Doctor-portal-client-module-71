@@ -18,8 +18,9 @@ const [token, setToken] = useState('')
         console.log(data);
         if(data.token){
             const accessToken = data.token
-            localStorage.setItem('accessToken', accessToken)
+            console.log(accessToken);
             setToken(accessToken)
+            localStorage.setItem('accessToken', JSON.stringify(accessToken))
         }
     })
   }

@@ -21,7 +21,7 @@ const Login = () => {
   const [sendPasswordResetEmail, sending, errorR] =
     useSendPasswordResetEmail(auth);
 
-  const [token, setToken] = useToken(user || gUser)
+  const [token] = useToken(user || gUser)
   const [email, setEmail] = useState('');
 
   const navigate = useNavigate();
@@ -57,9 +57,8 @@ const Login = () => {
   };
 
 
-  /*  reset click hanlde button  */
+  /*  reset click handle button  */
   const handleResetPass = async () => {
-    console.log(email);
     await sendPasswordResetEmail(email);
   };
 

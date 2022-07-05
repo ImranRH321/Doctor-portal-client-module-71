@@ -45,6 +45,7 @@ const SignUp = () => {
   }
 
   if (token) {
+    console.log(token);
     navigate("/appointment"); 
   }
 
