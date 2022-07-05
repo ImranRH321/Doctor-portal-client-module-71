@@ -16,6 +16,11 @@ const [token, setToken] = useState('')
     }).then(res => res.json())
     .then(data => {
         console.log(data);
+        if(data.token){
+            const accessToken = data.token
+            localStorage.setItem('accessToken', accessToken)
+            setToken(accessToken)
+        }
     })
   }
 

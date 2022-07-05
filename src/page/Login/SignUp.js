@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useToken from "../../hooks/useToken";
 
 
+
 const SignUp = () => {
   // google user
   const [signInWithGoogle, gUser, gloading, gerror] = useSignInWithGoogle(auth);
@@ -29,9 +30,7 @@ const SignUp = () => {
 
    //  reset password state 
    const [email, setEmail] = useState('')
-  
-   const [token] = useToken(user ||  gUser)
- 
+  const [token] = useToken(user || gUser)
 
   let signInError;
   if (gerror || error || updatingError) {

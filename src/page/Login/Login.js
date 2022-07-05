@@ -9,42 +9,43 @@ import { useForm } from "react-hook-form";
 import Loading from "../Sheared/Loading";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { async } from "@firebase/util";
+import useToken from "../../hooks/useToken";
 
 const Login = () => {
   // google
-  const [signInWithGoogle, userG, gloading, gerror] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   //  login user
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   /* reset password send  */
   const [sendPasswordResetEmail, sending, errorR] =
     useSendPasswordResetEmail(auth);
-  /* email  */
-  // const emailRef = useRef('')
 
+  const [token, setToken] = useToken(user || gUser)
   const [email, setEmail] = useState('');
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
   let signInError;
 
-  if (gerror || error) {
+  if (gError || error) {
     signInError = (
       <p className="text-red-400 py-2">
         Error:{" "}
         <small>
-          {gerror?.message} {error?.message}
+          {gError?.message} {error?.message}
         </small>
       </p>
     );
   }
 
   useEffect(() => {
-    if (user || userG) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [userG, user, navigate, from]);
+  }, [token, navigate, from]);
 
   const {
     register,
@@ -52,7 +53,6 @@ const Login = () => {
     handleSubmit,
   } = useForm();
   const onSubmit = async data => {
-    console.log(data);
     await signInWithEmailAndPassword(data.email, data.password);
   };
 
@@ -61,10 +61,9 @@ const Login = () => {
   const handleResetPass = async () => {
     console.log(email);
     await sendPasswordResetEmail(email);
-    alert('Sent email');
   };
 
-  if (gloading || loading) {
+  if (gLoading || loading) {
     return <Loading></Loading>;
   }
 
